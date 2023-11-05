@@ -1,0 +1,161 @@
+Solucion QA Reto Tecnico
+Candidato: Ricardo Valencia Lafosse
+
+1. Para poder conseguir la data dentro de la tabla DBC, especificamente la columna Tipodoc, es necesario ejecutar este query:
+
+	USE Cartera
+	SELECT Tipodoc 
+	FROM DBC;
+
+o tambien de manera mas generica
+
+	SELECT Tipodoc
+	FROM Cartera.DBC;
+
+
+2. Como se se necesita la data de 3 tablass (DBC, OPT y OLC), se  hace un JOIN a las tablas para sacar la informacion que tenga la data completa:
+
+	USE Cartera
+	SELECT dbc.Frecuencia, opt.Estatus, olc.Reprograma 
+	FROM DBC as dbc
+	INNER JOIN OPT opt ON opt.Documento = dbc.Documento
+	INNER JOIN OLC olc ON olc.Documento = dbc.Documento
+	WHERE  = olc.Documento = 14;
+
+o tambien de manera mas generica
+
+	SELECT DBC.Frecuencia, OPT.Estatus, OLC.Reprograma
+	FROM Cartera.DBC
+	INNER JOIN Cartera.OLC ON DBC.Documento = OLC.Documento
+	INNER JOIN Cartera.OPT ON DBC.Documento = OPT.Documento
+	WHERE OLC.Tipodo = 14;
+
+
+3. Para cada 1 de las 6 tarjetas (Empresarial, Platinium, VIP, Clásica, Joven y Emprendedor) se debe revisar:
+	- El cálculo correcto del Seguro desgravamen
+	- La afectación contable
+	- El cobro con el nuevo factor se refleje en el EECC 
+	
+	* Ciclos de facturacion son el 11 y 26 de cada mes
+	
+En su totalidad se podrian crear 18 casos de prueba, pero por ser un Smoke test se refinan los siguientes:
+
+CASO DE PRUEBA 1: Ciclo de facturación 26 con TC Empresarial:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+	- La cuenta de prueba debe tener una "Tarjeta de Crédito Empresarial" 
+PASOS:
+	1) Ingresar al sistema con una cuenta de prueba con una "Tarjeta de Crédito Empresarial".
+	2) Realizar una transacción que genere un cargo de seguro de desgravamen.
+RESULTADO ESPERADO:
+	1) Verificar el ciclo de facturación establecido (26 de cada mes).
+	2) Validar que el cálculo del seguro de desgravamen se realice correctamente (0.95%).
+	2) Verificar la afectación contable correspondiente.
+	2) Revisar que el nuevo cobro se refleje correctamente en el Estado de Cuenta.
+
+CASO DE PRUEBA 2: Ciclo de facturación 11 con TC Platinium:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+	- La cuenta de prueba debe tener una "Tarjeta de Crédito Platinium" 
+PASOS:
+	1) Ingresar al sistema con una cuenta de prueba con una "Tarjeta de Crédito Platinium".
+	2) Realizar una transacción que genere un cargo de seguro de desgravamen.
+RESULTADO ESPERADO:
+	1) Verificar el ciclo de facturación establecido (11 de cada mes).
+	2) Validar que el cálculo del seguro de desgravamen se realice correctamente (0.95%).
+	2) Verificar la afectación contable correspondiente.
+	2) Revisar que el nuevo cobro se refleje correctamente en el Estado de Cuenta.
+
+CASO DE PRUEBA 3: Ciclo de facturación 26 con TC VIP:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+	- La cuenta de prueba debe tener una "Tarjeta de Crédito VIP" 
+PASOS:
+	1) Ingresar al sistema con una cuenta de prueba con una "Tarjeta de Crédito VIP".
+	2) Realizar una transacción que genere un cargo de seguro de desgravamen.
+RESULTADO ESPERADO:
+	1) Verificar el ciclo de facturación establecido (26 de cada mes).
+	2) Validar que el cálculo del seguro de desgravamen se realice correctamente (0.95%).
+	2) Verificar la afectación contable correspondiente.
+	2) Revisar que el nuevo cobro se refleje correctamente en el Estado de Cuenta.
+
+CASO DE PRUEBA 4: Ciclo de facturación 11 con TC Clásica:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+	- La cuenta de prueba debe tener una "Tarjeta de Crédito Clásica" 
+PASOS:
+	1) Ingresar al sistema con una cuenta de prueba con una "Tarjeta de Crédito Clásica".
+	2) Realizar una transacción que genere un cargo de seguro de desgravamen.
+RESULTADO ESPERADO:
+	1) Verificar el ciclo de facturación establecido (11 de cada mes).
+	2) Validar que el cálculo del seguro de desgravamen se realice correctamente (0.95%).
+	2) Verificar la afectación contable correspondiente.
+	2) Revisar que el nuevo cobro se refleje correctamente en el Estado de Cuenta.
+
+CASO DE PRUEBA 5: Ciclo de facturación 26 con TC Joven:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+	- La cuenta de prueba debe tener una "Tarjeta de Crédito Joven" 
+PASOS:
+	1) Ingresar al sistema con una cuenta de prueba con una "Tarjeta de Crédito Joven".
+	2) Realizar una transacción que genere un cargo de seguro de desgravamen.
+RESULTADO ESPERADO:
+	1) Verificar el ciclo de facturación establecido (26 de cada mes).
+	2) Validar que el cálculo del seguro de desgravamen se realice correctamente (0.95%).
+	2) Verificar la afectación contable correspondiente.
+	2) Revisar que el nuevo cobro se refleje correctamente en el Estado de Cuenta.
+
+CASO DE PRUEBA 6: Ciclo de facturación 11 con TC Emprendedor:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+	- La cuenta de prueba debe tener una "Tarjeta de Crédito Emprendedor" 
+PASOS:
+	1) Ingresar al sistema con una cuenta de prueba con una "Tarjeta de Crédito Emprendedor".
+	2) Realizar una transacción que genere un cargo de seguro de desgravamen.
+RESULTADO ESPERADO:
+	1) Verificar el ciclo de facturación establecido (11 de cada mes).
+	2) Validar que el cálculo del seguro de desgravamen se realice correctamente (0.95%).
+	2) Verificar la afectación contable correspondiente.
+	2) Revisar que el nuevo cobro se refleje correctamente en el Estado de Cuenta.
+
+
+4. Para cada 1 de las 3 (Cuenta de Ahorro, Cuenta Corriente y Préstamo) se debe revisar:
+	- El cálculo correcto del Seguro desgravamen
+	- La afectación contable
+	- El cobro con el nuevo factor se refleje en el resumen de la cuenta o en el plan de pagos del préstamo.
+
+CASO DE PRUEBA 7: Cuenta de Ahorro nueva:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+PASOS:
+	1) Crear una cuenta de ahorro de prueba.
+	2) Realizar un depósito en la cuenta.
+RESULTADO ESPERADO:
+	1) Verificar que el nuevo factor de Seguro de Desgravamen (0.95%) se aplique correctamente.
+	2) Validar que el cálculo del Seguro de Desgravamen sea correcto.
+	2) Verificar la afectación contable correspondiente.
+	2) Confirmar que el nuevo cobro se refleje en el resumen de la cuenta.
+
+CASO DE PRUEBA 8: Cuenta Corriente existente:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+PASOS:
+	1) Crear una cuenta corriente de prueba.
+	2) Realizar una transaccion en la cuenta.
+RESULTADO ESPERADO:
+	1) Verificar que el nuevo factor de Seguro de Desgravamen (0.95%) se aplique correctamente.
+	2) Validar que el cálculo del Seguro de Desgravamen sea correcto.
+	2) Verificar la afectación contable correspondiente.
+	2) Confirmar que el nuevo cobro se refleje en el resumen de la cuenta.
+
+CASO DE PRUEBA 9: Préstamo nuevo:
+PRECONDICIONES: 
+	- Tener una cuenta de prueba
+PASOS:
+	1) Solicitar un préstamo personal de prueba.
+	2) Calcular el costo del Seguro de Desgravamen para el préstamo.
+RESULTADO ESPERADO:
+	1) Verificar que el nuevo factor de Seguro de Desgravamen (0.95%) se aplique correctamente.
+	2) Validar que el cálculo sea correcto.
+	2) Verificar la afectación contable correspondiente.
+	2) Confirmar que el nuevo cobro se refleje en el plan de pagos del préstamo.
